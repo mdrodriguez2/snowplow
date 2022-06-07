@@ -14,6 +14,7 @@ val ScalaTestVersion = "3.2.11"
 val RefinedTypesVersion = "0.9.28"
 val DatatapsCommonsVersion = "0.14.29"
 val ZIOHttpVersion = "1.0.0.0-RC19"
+val JsonSchemaValidatorVersion = "5.1.0"
 
 resolvers += "releases" at "https://nexus.corp.twilio.com/content/repositories/releases"
 
@@ -42,7 +43,11 @@ libraryDependencies ++= Seq(
   //pure config
   "com.github.pureconfig" %% "pureconfig" % PureConfigVersion,
   // log4j
-  "org.slf4j" % "slf4j-log4j12" % Log4JVersion
+  "org.slf4j" % "slf4j-log4j12" % Log4JVersion,
+
+  //Schema validator
+ "io.rest-assured" % "json-schema-validator" % JsonSchemaValidatorVersion,
+ "io.rest-assured" % "json-schema-validator" % JsonSchemaValidatorVersion % Test
 )
 
 scalacOptions ++= Seq(
