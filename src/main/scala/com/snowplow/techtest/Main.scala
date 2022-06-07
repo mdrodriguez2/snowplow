@@ -1,7 +1,9 @@
 package com.snowplow.techtest
 
 import cats.effect.{ExitCode => CatsExitCode}
+import com.snowplow.techtest.adapter.service.InMemorySchemaRepositoryService
 import com.snowplow.techtest.configuration.Configuration
+import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.http.Api
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -16,11 +18,11 @@ import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 object Main extends App {
   val ec: ExecutionContextExecutor = ExecutionContext.global
-  type AppEnvironment = Configuration with Clock
+  type AppEnvironment = Configuration with Clock with SchemaRepositoryEnv
 
   type AppTask[A] = RIO[AppEnvironment, A]
 
-  val appEnvironment: Layer[Throwable, Configuration] = Configuration.live
+  val appEnvironment = Configuration.live ++ InMemorySchemaRepositoryService.live
 
   override def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] = {
     val program: ZIO[AppEnvironment, Throwable, Unit] =
