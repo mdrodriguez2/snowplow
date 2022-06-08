@@ -4,7 +4,7 @@ trait AppError extends Exception {
   val message: String
 }
 
-final case class SchemaValidationFailed(schemaId: String) extends AppError {
+final case class JsonValidationFailed(schemaId: String) extends AppError {
   override val message = s"Validation failed for schema $schemaId"
 }
 
