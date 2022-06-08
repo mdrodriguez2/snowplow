@@ -11,6 +11,7 @@ object SchemaManager {
   //TODO add validation logic here and there
   def uploadSchema(schema: Json, id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, SchemaId] =
     SchemaRepository.store(schema, id)
+
   def retrieveSchema(id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, Json] =
     SchemaRepository
       .retrieve(id)

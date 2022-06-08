@@ -1,6 +1,6 @@
 package com.snowplow.techtest.domain.service
 
-import com.snowplow.techtest.domain.model.{AppError, SchemaValidationFailed}
+import com.snowplow.techtest.domain.model.{AppError, JsonValidationFailed}
 import com.snowplow.techtest.domain.port.SchemaRepository.{SchemaId, SchemaRepositoryEnv}
 import io.circe.Json
 import io.restassured.module.jsv.JsonSchemaValidator
@@ -19,6 +19,6 @@ object JsonValidationService {
     val validator: JsonSchemaValidator = JsonSchemaValidator.matchesJsonSchema(schema.toString)
     val validJson                      = validator.matches(json.deepDropNullValues.toString)
     if (validJson) IO.succeed((): Unit)
-    else IO.fail(SchemaValidationFailed(schemaId))
+    else IO.fail(JsonValidationFailed(schemaId))
   }
 }
