@@ -1,7 +1,7 @@
 package com.snowplow.techtest
 
 import cats.effect.{ExitCode => CatsExitCode}
-import com.snowplow.techtest.adapter.service.InMemorySchemaRepositoryService
+import com.snowplow.techtest.adapter.service.InMemorySchemaRepository
 import com.snowplow.techtest.configuration.Configuration
 import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.http.Api
@@ -22,7 +22,7 @@ object Main extends App {
 
   type AppTask[A] = RIO[AppEnvironment, A]
 
-  val appEnvironment = Configuration.live ++ InMemorySchemaRepositoryService.live
+  val appEnvironment = Configuration.live ++ InMemorySchemaRepository.live
 
   override def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] = {
     val program: ZIO[AppEnvironment, Throwable, Unit] =

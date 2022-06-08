@@ -14,11 +14,13 @@ object SchemaRepository {
 
   //service def
   trait Service {
-    def retrieve(id: SchemaId): IO[AppError, Json]
+    def retrieve(id: SchemaId):            IO[AppError, Option[Json]]
     def store(schema: Json, id: SchemaId): IO[AppError, SchemaId]
   }
 
   //front-facing API
-  def retrieve(id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, Json] = ZIO.accessM[SchemaRepositoryEnv](_.get.retrieve(id))
-  def store(schema: Json, id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, SchemaId] = ZIO.accessM[SchemaRepositoryEnv](_.get.store(schema, id))
+  def retrieve(id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, Option[Json]] =
+    ZIO.accessM[SchemaRepositoryEnv](_.get.retrieve(id))
+  def store(schema: Json, id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, SchemaId] =
+    ZIO.accessM[SchemaRepositoryEnv](_.get.store(schema, id))
 }
