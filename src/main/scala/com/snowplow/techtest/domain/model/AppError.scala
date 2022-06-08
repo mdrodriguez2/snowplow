@@ -11,5 +11,3 @@ final case class SchemaValidationFailed(schemaId: String) extends AppError {
 final case class SchemaNotFoundError(schemaId: String) extends AppError {
   override val message = s"Schema with ID $schemaId not found"
 }
-
-

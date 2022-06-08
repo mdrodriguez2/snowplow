@@ -17,10 +17,8 @@ object JsonValidationService {
   //TODO this is just a stub
   def validate(schema: Json, json: Json, schemaId: SchemaId): IO[AppError, Unit] = {
     val validator: JsonSchemaValidator = JsonSchemaValidator.matchesJsonSchema(schema.toString)
-    val res                            = validator.matches(json.toString)
-    if (res) IO.succeed((): Unit)
+    val validJson                      = validator.matches(json.deepDropNullValues.toString)
+    if (validJson) IO.succeed((): Unit)
     else IO.fail(SchemaValidationFailed(schemaId))
-
   }
-
 }

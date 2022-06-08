@@ -9,7 +9,7 @@ import zio.{IO, ZLayer}
 import scala.collection.mutable
 
 object InMemorySchemaRepository {
-  val live: ZLayer[Any, AppError, SchemaRepositoryEnv] = ZLayer.succeed(new InMemorySchemaRepository)
+  val live: ZLayer[Any, Nothing, SchemaRepositoryEnv] = ZLayer.succeed(new InMemorySchemaRepository)
 }
 
 //TODO add logs all over this
