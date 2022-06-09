@@ -7,10 +7,6 @@ package object configuration {
 
   type Configuration = Has[ApiConfig]
 
-  final case class AppConfig(api: ApiConfig)
-
-  final case class ApiConfig(endpoint: String, port: Int)
-
   val apiConfig: URIO[Has[ApiConfig], ApiConfig] = ZIO.access(_.get)
 
   object Configuration {
@@ -24,3 +20,7 @@ package object configuration {
     )
   }
 }
+
+final case class AppConfig(api: ApiConfig)
+
+final case class ApiConfig(endpoint: String, port: Int)
