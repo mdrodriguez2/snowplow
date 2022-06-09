@@ -3,6 +3,7 @@ package com.snowplow.techtest.http
 import com.snowplow.techtest.domain.model.{JsonValidationFailed, SchemaNotFoundError}
 import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.domain.service.{JsonValidationService, SchemaManager}
+import com.snowplow.techtest.http.model.Action.{RetrieveSchema, ValidateDocument}
 import com.snowplow.techtest.http.model.Response._
 import io.circe.syntax._
 import io.circe.{Encoder, Json}
@@ -40,10 +41,15 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
         )
 
       case GET -> Root / "schema" / schemaId =>
-        for {
-          result <- SchemaManager.retrieveSchema(schemaId)
-          res    <- Ok(result.asJson)
-        } yield res
+        SchemaManager
+          .retrieveSchema(schemaId)
+          .foldM(
+            {
+              case err: SchemaNotFoundError => NotFound(schemaNotFound(RetrieveSchema, schemaId, err.message).asJson)
+              case other                    => InternalServerError(unknownError(other.getMessage).asJson)
+            },
+            schema => Ok(schema.asJson)
+          )
 
       case req @ POST -> Root / "validate" / schemaId =>
         (for {
@@ -53,8 +59,9 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
           {
             case _: MalformedMessageBodyFailure => BadRequest(jsonInvalid(schemaId, "Invalid JSON").asJson)
             case error: JsonValidationFailed    => BadRequest(jsonInvalid(schemaId, error.message).asJson)
-            case error: SchemaNotFoundError     => BadRequest(schemaNotFound(schemaId, error.message).asJson)
-            case other                          => InternalServerError(unknownError(other.getMessage).asJson)
+            case error: SchemaNotFoundError =>
+              BadRequest(schemaNotFound(ValidateDocument, schemaId, error.message).asJson)
+            case other => InternalServerError(unknownError(other.getMessage).asJson)
           },
           id => Ok(jsonValid(id).asJson)
         )

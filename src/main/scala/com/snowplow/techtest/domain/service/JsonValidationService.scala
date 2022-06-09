@@ -14,7 +14,6 @@ object JsonValidationService {
       _      <- validate(schema, json, schemaId)
     } yield schemaId
 
-  //TODO this is just a stub
   def validate(schema: Json, json: Json, schemaId: SchemaId): IO[AppError, Unit] = {
     val validator: JsonSchemaValidator = JsonSchemaValidator.matchesJsonSchema(schema.toString)
     val validJson                      = validator.matches(json.deepDropNullValues.toString)

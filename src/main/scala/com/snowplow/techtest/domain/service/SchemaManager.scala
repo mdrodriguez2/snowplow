@@ -8,7 +8,6 @@ import zio.ZIO
 
 object SchemaManager {
 
-  //TODO add validation logic here and there
   def uploadSchema(schema: Json, id: SchemaId): ZIO[SchemaRepositoryEnv, AppError, SchemaId] =
     SchemaRepository.store(schema, id)
 

@@ -24,27 +24,24 @@ object Main extends App {
 
   val appEnvironment = Configuration.live ++ InMemorySchemaRepository.live
 
+  private def server: ZIO[AppEnvironment, Throwable, Unit] =
+    for {
+      api <- configuration.apiConfig
+      httpApp = Router[AppTask](
+        "/" -> Api(s"${api.endpoint}/").route
+      ).orNotFound
+
+      fullApp <- ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
+        BlazeServerBuilder[AppTask](ec)
+          .bindHttp(api.port, api.endpoint)
+          .withHttpApp(CORS(httpApp))
+          .serve
+          .compile[AppTask, AppTask, CatsExitCode]
+          .drain
+      }
+    } yield fullApp
+
   override def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] = {
-    val program: ZIO[AppEnvironment, Throwable, Unit] =
-      for {
-        api <- configuration.apiConfig
-        httpApp = Router[AppTask](
-          "/" -> Api(s"${api.endpoint}/").route
-        ).orNotFound
-
-        server <- ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
-          BlazeServerBuilder[AppTask](ec)
-            .bindHttp(api.port, api.endpoint)
-            .withHttpApp(CORS(httpApp))
-            .serve
-            .compile[AppTask, AppTask, CatsExitCode]
-            .drain
-        }
-      } yield server
-
-    val a: ZIO[zio.ZEnv, Throwable, Unit] = program
-      .provideSomeLayer[ZEnv](appEnvironment)
-
-    a.tapError(err => putStrLn(s"Execution failed with: $err")).exitCode
+    server.provideSomeLayer[ZEnv](appEnvironment).tapError(err => putStrLn(s"Execution failed with: $err")).exitCode
   }
 }
