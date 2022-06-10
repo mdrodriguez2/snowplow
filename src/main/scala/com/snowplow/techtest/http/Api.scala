@@ -48,7 +48,7 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
               case err: SchemaNotFoundError => NotFound(schemaNotFound(RetrieveSchema, schemaId, err.message).asJson)
               case other                    => InternalServerError(unknownError(other.getMessage).asJson)
             },
-            schema => Ok(schema.asJson)
+            schema => Ok(schema.noSpaces)
           )
 
       case req @ POST -> Root / "validate" / schemaId =>

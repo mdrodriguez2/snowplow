@@ -1,7 +1,7 @@
 package com.snowplow.techtest
 
 import cats.effect.{ExitCode => CatsExitCode}
-import com.snowplow.techtest.adapter.service.InMemorySchemaRepository
+import com.snowplow.techtest.adapter.service.{InDiskSchemaRepository, InMemorySchemaRepository}
 import com.snowplow.techtest.configuration.Configuration
 import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.http.Api
@@ -22,9 +22,9 @@ object Main extends App {
 
   type AppTask[A] = RIO[AppEnvironment, A]
 
-  val appEnvironment = Configuration.live ++ InMemorySchemaRepository.live
+  val appEnvironment = Configuration.live >+> InDiskSchemaRepository.live
 
-  private def server: ZIO[AppEnvironment, Throwable, Unit] =
+  def server: ZIO[AppEnvironment, Throwable, Unit] =
     for {
       api <- configuration.apiConfig
       httpApp = Router[AppTask](

@@ -25,11 +25,13 @@ libraryDependencies ++= Seq(
   "dev.zio"          %% "zio-interop-cats" % ZIOInteropVersion,
   "dev.zio"          %% "zio-test"         % ZIOVersion % "test",
   "dev.zio"          %% "zio-test-sbt"     % ZIOVersion % "test",
+
   //HTTP client
-  "io.d11" %% "zhttp"      % ZIOHttpVersion,
+  "io.d11" %% "zhttp"      % ZIOHttpVersion, //TODO MANUEL quizá quitar estos?
   "io.d11" %% "zhttp-test" % ZIOHttpVersion % Test,
   // Http4s
   "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
+  "org.http4s" %% "http4s-blaze-client" % Http4sVersion, //TODO MANUEL no sé si hace falta
   "org.http4s" %% "http4s-circe"        % Http4sVersion,
   "org.http4s" %% "http4s-dsl"          % Http4sVersion,
   "org.http4s" %% "http4s-client"       % Http4sVersion,
@@ -43,7 +45,10 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-log4j12" % Log4JVersion,
   //Schema validator
   "io.rest-assured" % "json-schema-validator" % JsonSchemaValidatorVersion,
-  "io.rest-assured" % "json-schema-validator" % JsonSchemaValidatorVersion % Test
+  "io.rest-assured" % "json-schema-validator" % JsonSchemaValidatorVersion % Test,
+
+  //testing
+  "org.scalatest" %% "scalatest" % ScalaTestVersion % Test
 )
 
 scalacOptions ++= Seq(
