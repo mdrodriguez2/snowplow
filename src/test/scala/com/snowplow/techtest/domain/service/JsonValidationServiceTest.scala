@@ -4,7 +4,7 @@ import com.snowplow.techtest.adapter.service.InMemorySchemaRepository
 import com.snowplow.techtest.fixtures.Fixtures
 import zio.test.Assertion.isTrue
 import zio.test.environment.TestEnvironment
-import zio.test.{DefaultRunnableSpec, ZSpec, assert}
+import zio.test.{assert, DefaultRunnableSpec, ZSpec}
 
 object JsonValidationServiceTest extends DefaultRunnableSpec with Fixtures {
   def spec: ZSpec[TestEnvironment, Failure] =

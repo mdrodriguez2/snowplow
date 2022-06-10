@@ -3,7 +3,7 @@ package com.snowplow.techtest.adapter.service
 import com.snowplow.techtest.StorageConfig
 import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.fixtures.Fixtures
-import zio.test.Assertion.{anything, fails, isTrue, succeeds}
+import zio.test.Assertion.{anything, isTrue, succeeds}
 import zio.test._
 import zio.test.environment.TestEnvironment
 import zio.{ZIO, ZLayer}
@@ -13,9 +13,9 @@ import scala.util.Try
 
 object InDiskSchemaRepositoryTest extends DefaultRunnableSpec with Fixtures {
 
-  val testStorageConfig  = ZLayer.succeed(StorageConfig("/tmp"))
-  val newFolder = "/tmp/new_folder"
-  val newFolderConfig  = ZLayer.succeed(StorageConfig(newFolder))
+  val testStorageConfig = ZLayer.succeed(StorageConfig("/tmp"))
+  val newFolder         = "/tmp/new_folder"
+  val newFolderConfig   = ZLayer.succeed(StorageConfig(newFolder))
 
   def spec: ZSpec[TestEnvironment, Failure] = {
     suite("InDiskSchemaRepository unit test")(

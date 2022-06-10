@@ -1,18 +1,20 @@
 package com.snowplow.techtest.domain.model
 
+import com.snowplow.techtest.domain.SchemaId
+
 trait AppError extends Exception {
   val message: String
 }
 
-final case class JsonValidationFailed(schemaId: String) extends AppError {
+final case class JsonValidationFailed(schemaId: SchemaId) extends AppError {
   override val message = s"Validation failed for schema $schemaId"
 }
 
-final case class SchemaNotFoundError(schemaId: String) extends AppError {
+final case class SchemaNotFoundError(schemaId: SchemaId) extends AppError {
   override val message = s"Schema with ID $schemaId not found"
 }
 
-final case class StorageError(schemaId: String, error: String) extends AppError {
+final case class StorageError(schemaId: SchemaId, error: String) extends AppError {
   override val message = s"error retrieving schema $schemaId from disk: $error"
 }
 

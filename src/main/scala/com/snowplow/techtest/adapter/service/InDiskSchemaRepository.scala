@@ -1,9 +1,10 @@
 package com.snowplow.techtest.adapter.service
 
 import com.snowplow.techtest.StorageConfig
+import com.snowplow.techtest.domain.SchemaId
 import com.snowplow.techtest.domain.model.{AppError, FolderCreationError, StorageError}
 import com.snowplow.techtest.domain.port.SchemaRepository
-import com.snowplow.techtest.domain.port.SchemaRepository.{SchemaId, SchemaRepositoryEnv}
+import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import io.circe.Json
 import io.circe.parser._
 import zio.{IO, _}
@@ -14,7 +15,6 @@ object InDiskSchemaRepository {
   val live: ZLayer[Has[StorageConfig], Nothing, SchemaRepositoryEnv] = ZLayer.fromService(new InDiskSchemaRepository(_))
 }
 
-//TODO add logs all over this
 class InDiskSchemaRepository(config: StorageConfig) extends SchemaRepository.Service {
 
   private def buildPath(path: String, id: SchemaId): String = s"$path/$id"

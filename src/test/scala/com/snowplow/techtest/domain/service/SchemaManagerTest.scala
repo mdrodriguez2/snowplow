@@ -16,7 +16,7 @@ object SchemaManagerTest extends DefaultRunnableSpec with Fixtures {
         } yield assert(retrievedSchema == configSchemaJson)(isTrue) && assert(storedId == schemaId)(isTrue)
       },
       testM("return an error if a schema does not exist") {
-        assertM(SchemaManager.retrieveSchema("nonExistingSchema").run)(fails(anything)) //TODO this should be a typed error
+        assertM(SchemaManager.retrieveSchema("nonExistingSchema").run)(fails(anything))
       }
     ).provideSomeLayer[TestEnvironment](InMemorySchemaRepository.live)
 

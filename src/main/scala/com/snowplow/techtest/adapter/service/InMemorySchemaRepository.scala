@@ -1,8 +1,9 @@
 package com.snowplow.techtest.adapter.service
 
+import com.snowplow.techtest.domain.SchemaId
 import com.snowplow.techtest.domain.model.AppError
 import com.snowplow.techtest.domain.port.SchemaRepository
-import com.snowplow.techtest.domain.port.SchemaRepository.{SchemaId, SchemaRepositoryEnv}
+import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import io.circe.Json
 import zio.{IO, ZLayer}
 
@@ -12,7 +13,6 @@ object InMemorySchemaRepository {
   val live: ZLayer[Any, Nothing, SchemaRepositoryEnv] = ZLayer.succeed(new InMemorySchemaRepository)
 }
 
-//TODO add logs all over this
 class InMemorySchemaRepository extends SchemaRepository.Service {
 
   val storage = new mutable.HashMap[SchemaId, Json]()

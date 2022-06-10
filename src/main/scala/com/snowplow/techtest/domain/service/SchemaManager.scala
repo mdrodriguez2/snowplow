@@ -1,8 +1,9 @@
 package com.snowplow.techtest.domain.service
 
+import com.snowplow.techtest.domain.SchemaId
 import com.snowplow.techtest.domain.model.{AppError, SchemaNotFoundError}
 import com.snowplow.techtest.domain.port.SchemaRepository
-import com.snowplow.techtest.domain.port.SchemaRepository.{SchemaId, SchemaRepositoryEnv}
+import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import io.circe.Json
 import zio.ZIO
 

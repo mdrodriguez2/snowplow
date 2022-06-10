@@ -1,7 +1,7 @@
 package com.snowplow.techtest
 
 import cats.effect.{ExitCode => CatsExitCode}
-import com.snowplow.techtest.adapter.service.{InDiskSchemaRepository, InMemorySchemaRepository}
+import com.snowplow.techtest.adapter.service.InDiskSchemaRepository
 import com.snowplow.techtest.configuration.Configuration
 import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.http.Api

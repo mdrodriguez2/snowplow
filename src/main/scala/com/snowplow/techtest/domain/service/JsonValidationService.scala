@@ -1,7 +1,8 @@
 package com.snowplow.techtest.domain.service
 
+import com.snowplow.techtest.domain.SchemaId
 import com.snowplow.techtest.domain.model.{AppError, JsonValidationFailed}
-import com.snowplow.techtest.domain.port.SchemaRepository.{SchemaId, SchemaRepositoryEnv}
+import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import io.circe.Json
 import io.restassured.module.jsv.JsonSchemaValidator
 import zio.{IO, ZIO}

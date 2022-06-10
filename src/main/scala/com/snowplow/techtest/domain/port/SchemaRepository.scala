@@ -1,5 +1,6 @@
 package com.snowplow.techtest.domain.port
 
+import com.snowplow.techtest.domain.SchemaId
 import com.snowplow.techtest.domain.model.AppError
 import io.circe.Json
 import zio.{Has, IO, ZIO}
@@ -8,9 +9,6 @@ object SchemaRepository {
 
   //type definition
   type SchemaRepositoryEnv = Has[SchemaRepository.Service]
-
-  //TODO poner esto mejor
-  type SchemaId = String
 
   //service def
   trait Service {
