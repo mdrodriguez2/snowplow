@@ -1,3 +1,7 @@
 # snowplow
 snowplow tech test
-Build and run: `sbt run`
+
+manuel.rodriguez.pascual@gmail.com
+
+## Build and run
+`sbt run`
