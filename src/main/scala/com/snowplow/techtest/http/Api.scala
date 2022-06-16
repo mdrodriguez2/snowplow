@@ -5,7 +5,6 @@ import com.snowplow.techtest.domain.port.SchemaRepository.SchemaRepositoryEnv
 import com.snowplow.techtest.domain.service.{JsonValidationService, SchemaManager}
 import com.snowplow.techtest.http.model.Action.{RetrieveSchema, ValidateDocument}
 import com.snowplow.techtest.http.model.Response._
-import io.circe.syntax._
 import io.circe.{Encoder, Json}
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
@@ -34,10 +33,10 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
           storedId <- SchemaManager.uploadSchema(schema, schemaId)
         } yield storedId).foldM(
           {
-            case _: MalformedMessageBodyFailure => BadRequest(malformedSchema(schemaId).asJson)
-            case other                          => InternalServerError(unknownError(other.getMessage).asJson)
+            case _: MalformedMessageBodyFailure => BadRequest(malformedSchema(schemaId))
+            case other                          => InternalServerError(unknownError(other.getMessage))
           },
-          id => Created(schemaUploadedOk(id).asJson)
+          id => Created(schemaUploadedOk(id))
         )
 
       case GET -> Root / "schema" / schemaId =>
@@ -45,8 +44,8 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
           .retrieveSchema(schemaId)
           .foldM(
             {
-              case err: SchemaNotFoundError => NotFound(schemaNotFound(RetrieveSchema, schemaId, err.message).asJson)
-              case other                    => InternalServerError(unknownError(other.getMessage).asJson)
+              case err: SchemaNotFoundError => NotFound(schemaNotFound(RetrieveSchema, schemaId, err.message))
+              case other                    => InternalServerError(unknownError(other.getMessage))
             },
             schema => Ok(schema.noSpaces)
           )
@@ -57,13 +56,12 @@ final case class Api[R <: SchemaRepositoryEnv](rootUri: String) {
           validatedId <- JsonValidationService.validateJson(json, schemaId)
         } yield validatedId).foldM(
           {
-            case _: MalformedMessageBodyFailure => BadRequest(jsonInvalid(schemaId, "Invalid JSON").asJson)
-            case error: JsonValidationFailed    => BadRequest(jsonInvalid(schemaId, error.message).asJson)
-            case error: SchemaNotFoundError =>
-              BadRequest(schemaNotFound(ValidateDocument, schemaId, error.message).asJson)
-            case other => InternalServerError(unknownError(other.getMessage).asJson)
+            case _: MalformedMessageBodyFailure => BadRequest(jsonInvalid(schemaId, "Invalid JSON"))
+            case error: JsonValidationFailed    => BadRequest(jsonInvalid(schemaId, error.message))
+            case error: SchemaNotFoundError     => BadRequest(schemaNotFound(ValidateDocument, schemaId, error.message))
+            case other                          => InternalServerError(unknownError(other.getMessage))
           },
-          id => Ok(jsonValid(id).asJson)
+          id => Ok(jsonValid(id))
         )
     }
   }
